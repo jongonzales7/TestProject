@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "974177940736",
+    "firebase_url": "https://testproject-65084.firebaseio.com",
+    "project_id": "testproject-65084",
+    "storage_bucket": "testproject-65084.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974177940736:android:613c1b9afc97ff83",
+        "android_client_info": {
+          "package_name": "com.gonzales.rodriguez"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974177940736-3n0cbief5bo0jgu1t40dvplsjr4o316p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkCys6mXV_cwixYfuQDTpzh8q6yOrBreA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
