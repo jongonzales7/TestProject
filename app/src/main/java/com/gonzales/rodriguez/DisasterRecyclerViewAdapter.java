@@ -33,7 +33,6 @@ public class DisasterRecyclerViewAdapter extends RecyclerView.Adapter<DisasterRe
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Clicked " + String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(mContext, EventActivity.class);
                 i.putExtra("name", mData.get(vHolder.getAdapterPosition()).getName());
                 mContext.startActivity(i);

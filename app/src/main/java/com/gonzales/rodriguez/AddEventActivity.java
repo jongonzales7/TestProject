@@ -1,12 +1,19 @@
 package com.gonzales.rodriguez;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -15,7 +22,8 @@ import java.util.Map;
 
 public class AddEventActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
-    EditText name, location, type;
+    EditText eName, eLocation;
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,25 +32,50 @@ public class AddEventActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         databaseReference = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/").getReference();
-        name = (EditText) findViewById(R.id.etName);
-        location = (EditText) findViewById(R.id.etLocation);
-        type = (EditText) findViewById(R.id.etType);
+        eName = (EditText) findViewById(R.id.etName);
+        eLocation = (EditText) findViewById(R.id.etLocation);
+        spinner = (Spinner) findViewById(R.id.mySpinner);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.disasters_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
     }
 
     public void addEvent(View v) {
         String key = databaseReference.child("events").push().getKey();
-        Event event  = new Event(name.getText().toString(), location.getText().toString(), type.getText().toString());
+
+        String name = eName.getText().toString();
+        String location = eLocation.getText().toString();
+        String type = spinner.getSelectedItem().toString();
+
+        Event event = new Event(name, location, type, key);
         Map<String, Object> eventValues = event.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/events/" + key, eventValues);
-        databaseReference.updateChildren(childUpdates);
+        databaseReference.updateChildren(childUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+            Toast.makeText(AddEventActivity.this, "Yey, event successfully added!", Toast.LENGTH_LONG).show();
+            eName.setText("");
+            eLocation.setText("");
+        }
+    })
+            .addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+            Toast.makeText(AddEventActivity.this, "Ooops, event not added!", Toast.LENGTH_LONG).show();
+        }
+    });
 
     }
 
-
-
+    //Code for back button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -57,4 +90,5 @@ public class AddEventActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
 }

@@ -36,12 +36,10 @@ public class DisasterFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listDisaster = new ArrayList<>();
-        listDisaster.add(new Disaster("Fire"));
-        listDisaster.add(new Disaster("Flood"));
-        listDisaster.add(new Disaster("Tornado"));
-        listDisaster.add(new Disaster("Earthquake"));
-        listDisaster.add(new Disaster("Hurricane"));
-        listDisaster.add(new Disaster("Tsunami"));
+        String[] disasters = getResources().getStringArray(R.array.disasters_array);
+        for(int i = 0; i < disasters.length; i++) {
+            listDisaster.add(new Disaster(disasters[i]));
+        }
 
     }
 }
