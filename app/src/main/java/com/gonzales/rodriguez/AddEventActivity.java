@@ -1,5 +1,8 @@
 package com.gonzales.rodriguez;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +34,10 @@ public class AddEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_event);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        if(!isNetworkAvailable()) {
+            Toast.makeText(this, "Cannot connect to Firebase! Please check Wi-Fi connectivity", Toast.LENGTH_LONG).show();
+        }
+
         databaseReference = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/").getReference();
         eName = (EditText) findViewById(R.id.etName);
         eLocation = (EditText) findViewById(R.id.etLocation);
@@ -47,6 +54,11 @@ public class AddEventActivity extends AppCompatActivity {
     }
 
     public void addEvent(View v) {
+        if(!isNetworkAvailable()) {
+            Toast.makeText(this, "Cannot add event! Please check Wi-Fi connectivity", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String key = databaseReference.child("events").push().getKey();
 
         String name = eName.getText().toString();
@@ -89,6 +101,13 @@ public class AddEventActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

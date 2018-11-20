@@ -1,6 +1,9 @@
 package com.gonzales.rodriguez;
 
 import android.app.ActionBar;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +42,10 @@ public class EventActivity extends AppCompatActivity {
         disasterName = getIntent().getStringExtra("name");
 
         getSupportActionBar().setTitle(disasterName);
+
+        if(!isNetworkAvailable()) {
+            Toast.makeText(this, "Cannot connect to Firebase! Please check Wi-Fi connectivity", Toast.LENGTH_LONG).show();
+        }
 
         recyclerView = (RecyclerView) findViewById(R.id.event_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -84,5 +91,12 @@ public class EventActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
