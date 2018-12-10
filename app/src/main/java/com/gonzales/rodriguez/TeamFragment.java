@@ -47,33 +47,33 @@ public class TeamFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listTeam = new ArrayList<>();
-        String[] teams = getResources().getStringArray(R.array.teams_array);
-        for(int i = 0; i < teams.length; i++) {
-            listTeam.add(new Team(teams[i], null, null));
-        }
+//        String[] teams = getResources().getStringArray(R.array.teams_array);
+//        for(int i = 0; i < teams.length; i++) {
+//            listTeam.add(new Team(teams[i], null, null));
+//        }
 
-//        databaseReference = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/").getReference().child("teams");
-//
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                listTeam = new ArrayList<Team>();
-//                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
-//                {
-//                    Team p = dataSnapshot1.getValue(Team.class);
-//                    listTeam.add(p);
-//
-//
-//                }
-//                teamRecyclerViewAdapter = new TeamRecyclerViewAdapter(getContext(),listTeam);
-//                recyclerView.setAdapter(teamRecyclerViewAdapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Toast.makeText(getContext(), "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        databaseReference = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/").getReference().child("teams");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listTeam = new ArrayList<Team>();
+                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                {
+                    Team p = dataSnapshot1.getValue(Team.class);
+                    listTeam.add(p);
+
+
+                }
+                teamRecyclerViewAdapter = new TeamRecyclerViewAdapter(getContext(),listTeam);
+                recyclerView.setAdapter(teamRecyclerViewAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 }

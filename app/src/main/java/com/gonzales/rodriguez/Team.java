@@ -3,19 +3,21 @@ package com.gonzales.rodriguez;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @IgnoreExtraProperties
 public class Team {
     public String name;
-    public String[] members;
+    public ArrayList<String> members;
     public String key;
 
 
     public Team() {}
 
-    public Team(String name, String[] members, String key) {
+    public Team(String name, ArrayList<String> members, String key) {
         this.name = name;
         this.members = members;
         this.key = key;
@@ -38,11 +40,11 @@ public class Team {
         this.name = name;
     }
 
-    public String[] getMembers() {
+    public ArrayList<String> getMembers() {
         return members;
     }
 
-    public void setMembers(String[] members) {
+    public void setMembers(ArrayList<String> members) {
         this.members = members;
     }
 

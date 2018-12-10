@@ -44,4 +44,5 @@ public class DisasterFragment extends Fragment{
         }
 
     }
+
 }

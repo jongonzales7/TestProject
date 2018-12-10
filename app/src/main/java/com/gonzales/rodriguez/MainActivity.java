@@ -60,14 +60,23 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, AddEventActivity.class));
             }
-        });
+        });*/
 
+    }
+
+    public void addEvent(View v){
+        startActivity(new Intent(MainActivity.this, AddEventActivity.class));
+    }
+
+
+    public void addTeam(View v){
+        startActivity(new Intent(MainActivity.this, AddTeamActivity.class));
     }
 
 

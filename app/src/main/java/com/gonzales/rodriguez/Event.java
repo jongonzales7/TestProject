@@ -15,19 +15,21 @@ public class Event {
     public String date;
     public String type;
     public String key;
+    public String team;
 
 
     public Event() {
 
     }
 
-    public Event(String name, String location, String type, String key) {
+    public Event(String name, String location, String type, String key, String team) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         this.name = name;
         this.location = location;
         this.date = sdf.format(new Date());
         this.type = type;
         this.key = key;
+        this.team = team;
     }
 
     @Exclude
@@ -38,6 +40,7 @@ public class Event {
         result.put("location", location);
         result.put("date", date);
         result.put("type", type);
+        result.put("team", team);
         return result;
     }
 
@@ -79,5 +82,13 @@ public class Event {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
     }
 }

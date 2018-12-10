@@ -9,8 +9,15 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/disaster_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/addEventBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addEvent"
+        android:text="Add Event" />
 
 </LinearLayout>

@@ -16,16 +16,18 @@ import com.google.firebase.database.ValueEventListener;
 public class ViewEventActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     String key;
-    TextView name, location, date;
+    TextView name, location, date, team;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        name = (TextView) findViewById(R.id.tvName);
+        name = (TextView) findViewById(R.id.tvEventName);
         location = (TextView) findViewById(R.id.tvLocation);
         date = (TextView) findViewById(R.id.tvDate);
+        team = (TextView) findViewById(R.id.tvTeam);
+
         key = getIntent().getStringExtra("key");
 
         Toast.makeText(this, key, Toast.LENGTH_LONG).show();
@@ -44,6 +46,8 @@ public class ViewEventActivity extends AppCompatActivity {
                         name.setText(p.getName());
                         location.setText(p.getLocation());
                         date.setText(p.getDate());
+                        team.setText(p.getTeam());
+
                     }
 
                 }
