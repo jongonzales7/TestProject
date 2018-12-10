@@ -82,10 +82,10 @@ public class AddTeamActivity extends AppCompatActivity {
         }
 
 
-        String name = eTeamName.getText().toString();
-        String mem1 = eMember1.getText().toString();
-        String mem2 = eMember2.getText().toString();
-        String mem3 = eMember3.getText().toString();
+        String name = eTeamName.getText().toString().trim();
+        String mem1 = eMember1.getText().toString().trim();
+        String mem2 = eMember2.getText().toString().trim();
+        String mem3 = eMember3.getText().toString().trim();
 
         if(name.length() <= 0 ||  mem1.length() <= 0 ||  mem2.length() <= 0 ||  mem3.length() <= 0){
             Toast.makeText(this, "All fields are required. Please input missing fields...", Toast.LENGTH_LONG).show();

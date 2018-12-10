@@ -45,7 +45,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(mData.get(position).getName());
         holder.location.setText(mData.get(position).getLocation());
-        holder.date.setText(mData.get(position).getDate());
+        String[] splited = (mData.get(position).getDate()).split("\\s+");
+        holder.date.setText(splited[0]);
     }
 
     // total number of rows

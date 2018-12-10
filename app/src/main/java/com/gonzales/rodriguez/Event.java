@@ -16,13 +16,17 @@ public class Event {
     public String type;
     public String key;
     public String team;
+    public Double latitude;
+    public Double longitude;
+    public String action;
+    public String vehicle;
 
 
     public Event() {
 
     }
 
-    public Event(String name, String location, String type, String key, String team) {
+    public Event(String name, String location, String type, String key, String team, Double latitude, Double longitude, String action, String vehicle) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         this.name = name;
         this.location = location;
@@ -30,6 +34,10 @@ public class Event {
         this.type = type;
         this.key = key;
         this.team = team;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.action = action;
+        this.vehicle = vehicle;
     }
 
     @Exclude
@@ -41,6 +49,10 @@ public class Event {
         result.put("date", date);
         result.put("type", type);
         result.put("team", team);
+        result.put("latitude", latitude);
+        result.put("longitude", longitude);
+        result.put("action", action);
+        result.put("vehicle", vehicle);
         return result;
     }
 
@@ -90,5 +102,37 @@ public class Event {
 
     public void setTeam(String team) {
         this.team = team;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(String vehicle) {
+        this.vehicle = vehicle;
     }
 }

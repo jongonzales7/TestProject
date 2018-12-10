@@ -31,7 +31,7 @@ import java.util.Map;
 public class AddEventActivity extends AppCompatActivity {
     FirebaseDatabase db;
     DatabaseReference events, teams;
-    EditText eName, eLocation;
+    EditText eName, eLocation, eLat, eLong, eAction, eVehicle;
     Spinner spinner, teamSpinner;
     ArrayList<String> teamNames;
 
@@ -55,6 +55,10 @@ public class AddEventActivity extends AppCompatActivity {
 
         eName = (EditText) findViewById(R.id.etName);
         eLocation = (EditText) findViewById(R.id.etLocation);
+        eLat = (EditText) findViewById(R.id.etLat);
+        eLong = (EditText) findViewById(R.id.etLong);
+        eAction = (EditText) findViewById(R.id.etAction);
+        eVehicle = (EditText) findViewById(R.id.etVehicle);
         spinner = (Spinner) findViewById(R.id.mySpinner);
         teamSpinner = (Spinner) findViewById(R.id.teamSpinner);
 
@@ -104,19 +108,36 @@ public class AddEventActivity extends AppCompatActivity {
         }
 
 
-        String name = eName.getText().toString();
-        String location = eLocation.getText().toString();
-        String type = spinner.getSelectedItem().toString();
-        String team = teamSpinner.getSelectedItem().toString();
+        String name = eName.getText().toString().trim();
+        String location = eLocation.getText().toString().trim();
+        Double lati, longi;
+        String type = spinner.getSelectedItem().toString().trim();
+        String team = teamSpinner.getSelectedItem().toString().trim();
+        String action = eAction.getText().toString().trim();
+        String vehicle = eVehicle.getText().toString().trim();
 
-        if(name.length() <= 0 || location.length() <= 0) {
+        if((eLat.getText().toString().trim()).length() <= 0 || (eLong.getText().toString().trim()).length() <= 0){
+            Toast.makeText(this, "All fields are required. Please input missing fields...", Toast.LENGTH_LONG).show();
+            return;
+        }else{
+            try{
+                lati = Double.parseDouble(eLat.getText().toString().trim());
+                longi = Double.parseDouble(eLong.getText().toString().trim());
+            }catch (Exception ex){
+                Toast.makeText(this, "Please input correct latitude and longitude...", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+        }
+
+        if(name.length() <= 0 || location.length() <= 0 || action.length() <= 0 || vehicle.length() <= 0) {
             Toast.makeText(this, "All fields are required. Please input missing fields...", Toast.LENGTH_LONG).show();
             return;
         }
 
         String key = events.push().getKey();
 
-        Event event = new Event(name, location, type, key, team);
+        Event event = new Event(name, location, type, key, team, lati, longi, action, vehicle);
         events.child(key).setValue(event,  new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -126,6 +147,10 @@ public class AddEventActivity extends AppCompatActivity {
                     Toast.makeText(AddEventActivity.this, "Yey, event successfully added!", Toast.LENGTH_LONG).show();
                     eName.setText("");
                     eLocation.setText("");
+                    eLat.setText("");
+                    eLong.setText("");
+                    eAction.setText("");
+                    eVehicle.setText("");
                 }
             }
         });

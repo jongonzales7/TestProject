@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 public class ViewEventActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     String key;
-    TextView name, location, date, team;
+    TextView name, location, date, team, latLong, action, vehicle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +27,12 @@ public class ViewEventActivity extends AppCompatActivity {
         location = (TextView) findViewById(R.id.tvLocation);
         date = (TextView) findViewById(R.id.tvDate);
         team = (TextView) findViewById(R.id.tvTeam);
+        latLong = (TextView) findViewById(R.id.tvLatLong);
+        action = (TextView) findViewById(R.id.tvAction);
+        vehicle = (TextView) findViewById(R.id.tvVehicle);
+
 
         key = getIntent().getStringExtra("key");
-
-        Toast.makeText(this, key, Toast.LENGTH_LONG).show();
-
 
         databaseReference = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/").getReference().child("events");
 
@@ -45,8 +46,12 @@ public class ViewEventActivity extends AppCompatActivity {
                         getSupportActionBar().setTitle(p.getName());
                         name.setText(p.getName());
                         location.setText(p.getLocation());
-                        date.setText(p.getDate());
+                        String[] splited = (p.getDate()).split("\\s+");
+                        date.setText(splited[0]);
                         team.setText(p.getTeam());
+                        latLong.setText(p.getLatitude() + " / " + p.getLongitude());
+                        action.setText(p.getAction());
+                        vehicle.setText(p.getVehicle());
 
                     }
 
