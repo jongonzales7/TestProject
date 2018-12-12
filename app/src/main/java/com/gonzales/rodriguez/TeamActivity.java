@@ -1,8 +1,11 @@
 package com.gonzales.rodriguez;
 
+import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,11 +22,16 @@ public class TeamActivity extends AppCompatActivity {
     String name;
     TextView tName, tMember1, tMember2, tMember3;
     ArrayList<String> teamMembers;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading...");
 
         db = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/");
         teams = db.getReference("teams");
@@ -40,6 +48,7 @@ public class TeamActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        pd.show();
         teams.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -59,6 +68,8 @@ public class TeamActivity extends AppCompatActivity {
 
                     }
                 }
+
+                pd.hide();
             }
 
             @Override
@@ -67,4 +78,20 @@ public class TeamActivity extends AppCompatActivity {
             }
         });
     }
+    //Code for back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
 }

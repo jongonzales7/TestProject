@@ -1,5 +1,6 @@
 package com.gonzales.rodriguez;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +18,7 @@ public class ViewEventActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     String key;
     TextView name, location, date, team, latLong, action, vehicle;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +33,15 @@ public class ViewEventActivity extends AppCompatActivity {
         action = (TextView) findViewById(R.id.tvAction);
         vehicle = (TextView) findViewById(R.id.tvVehicle);
 
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading...");
+
 
         key = getIntent().getStringExtra("key");
 
         databaseReference = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/").getReference().child("events");
 
+        pd.show();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -56,6 +62,8 @@ public class ViewEventActivity extends AppCompatActivity {
                     }
 
                 }
+                pd.hide();
+
             }
 
             @Override

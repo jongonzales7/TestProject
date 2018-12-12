@@ -1,6 +1,7 @@
 package com.gonzales.rodriguez;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -31,6 +32,7 @@ public class EventActivity extends AppCompatActivity {
     EventRecyclerViewAdapter eventRecyclerViewAdapter;
     TextView tvName, tvLocation, tvDate;
     String disasterName;
+    ProgressDialog pd;
 
 
     @Override
@@ -38,6 +40,8 @@ public class EventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading...");
 
         disasterName = getIntent().getStringExtra("name");
 
@@ -53,6 +57,7 @@ public class EventActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/").getReference().child("events");
 //        Query sortEventsByDisaster = databaseReference.orderByChild("type").equalTo(disasterName);
 
+        pd.show();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -67,6 +72,8 @@ public class EventActivity extends AppCompatActivity {
                 }
                 eventRecyclerViewAdapter = new EventRecyclerViewAdapter(EventActivity.this,events);
                 recyclerView.setAdapter(eventRecyclerViewAdapter);
+
+                pd.hide();
             }
 
             @Override

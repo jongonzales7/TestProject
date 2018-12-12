@@ -1,5 +1,6 @@
 package com.gonzales.rodriguez;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,12 +42,16 @@ public class AddEventActivity extends AppCompatActivity {
     ArrayList<String> teamNames;
     SharedPreferences sp;
     SharedPreferences.Editor ed;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading...");
 
         if(!isNetworkAvailable()) {
             Toast.makeText(this, "Cannot connect to Firebase! Please check Wi-Fi connectivity", Toast.LENGTH_LONG).show();
@@ -91,6 +96,7 @@ public class AddEventActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        pd.show();
         teams.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -104,6 +110,8 @@ public class AddEventActivity extends AppCompatActivity {
                 ArrayAdapter<String> team_adapter = new ArrayAdapter<String>(AddEventActivity.this, android.R.layout.simple_spinner_item, teamNames);
                 team_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 teamSpinner.setAdapter(team_adapter);
+
+                pd.hide();
 
             }
 

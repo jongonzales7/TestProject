@@ -14,6 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
         android:text="Name: "
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,6 +26,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Location:"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -36,6 +38,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Date:"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -83,6 +86,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Team Responded:"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -106,6 +110,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Latitude/Longitude:"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
@@ -129,6 +134,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Action Taken:"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -152,6 +158,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Vehicle Used:"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 

@@ -1,5 +1,6 @@
 package com.gonzales.rodriguez;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ public class TeamFragment extends Fragment {
     TeamRecyclerViewAdapter teamRecyclerViewAdapter;
     private List<Team> listTeam;
     DatabaseReference databaseReference;
+    ProgressDialog pd;
 
     @Nullable
     @Override
@@ -46,6 +48,8 @@ public class TeamFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pd = new ProgressDialog(getContext());
+        pd.setMessage("Loading...");
         listTeam = new ArrayList<>();
 //        String[] teams = getResources().getStringArray(R.array.teams_array);
 //        for(int i = 0; i < teams.length; i++) {
@@ -54,6 +58,7 @@ public class TeamFragment extends Fragment {
 
         databaseReference = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/").getReference().child("teams");
 
+        pd.show();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -67,6 +72,8 @@ public class TeamFragment extends Fragment {
                 }
                 teamRecyclerViewAdapter = new TeamRecyclerViewAdapter(getContext(),listTeam);
                 recyclerView.setAdapter(teamRecyclerViewAdapter);
+
+                pd.hide();
             }
 
             @Override

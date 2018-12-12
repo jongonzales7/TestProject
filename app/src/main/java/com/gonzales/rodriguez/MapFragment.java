@@ -1,5 +1,6 @@
 package com.gonzales.rodriguez;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -43,6 +44,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     View mView;
     ArrayList<Event> eventList;
     Marker marker;
+    ProgressDialog pd;
 
     @Nullable
     @Override
@@ -68,6 +70,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         db = FirebaseDatabase.getInstance("https://testproject-65084.firebaseio.com/");
         events = db.getReference("events");
         eventList = new ArrayList<>();
+        pd = new ProgressDialog(getContext());
+        pd.setMessage("Loading...");
     }
 
 
@@ -78,6 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
+        pd.show();
         events.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -159,6 +164,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     }
                 });
+
+                pd.hide();
             }
 
             @Override

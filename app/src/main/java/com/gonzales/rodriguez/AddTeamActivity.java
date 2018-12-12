@@ -1,5 +1,6 @@
 package com.gonzales.rodriguez;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -7,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,11 +34,16 @@ public class AddTeamActivity extends AppCompatActivity {
     DatabaseReference teams, root;
     EditText eTeamName, eMember1, eMember2, eMember3;
     ArrayList<Team> teamList;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_team);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading...");
 
         if(!isNetworkAvailable()) {
             Toast.makeText(this, "Cannot connect to Firebase! Please check Wi-Fi connectivity", Toast.LENGTH_LONG).show();
@@ -56,6 +64,7 @@ public class AddTeamActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        pd.show();
         teams.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -66,6 +75,8 @@ public class AddTeamActivity extends AppCompatActivity {
                     teamList.add(t);
 
                 }
+
+                pd.hide();
             }
 
             @Override
@@ -140,6 +151,21 @@ public class AddTeamActivity extends AppCompatActivity {
                 });*/
     }
 
+    //Code for back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
