@@ -1,13 +1,18 @@
 package com.gonzales.rodriguez;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,6 +20,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -80,8 +87,65 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Event e = dataSnapshot1.getValue(Event.class);
                     String[] splited = (e.getDate()).split("\\s+");
                     LatLng location = new LatLng(e.getLatitude(), e.getLongitude());
-                    marker = googleMap.addMarker(new MarkerOptions().position(location).title(e.getName()).snippet(e.getType() + " in " +  e.getLocation() + "  on " + splited[0]));
-                    marker.setTag(e.getKey());
+
+                    switch(e.getType()) {
+                        case "Fire":
+                            marker = googleMap.addMarker(new MarkerOptions().position(location).title(e.getName()).snippet("What: " + e.getType() + "\nWhere: " +  e.getLocation() + "\nWhen: " + splited[0])
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.fire)));
+                            marker.setTag(e.getKey());
+                            break;
+                        case "Typhoon":
+                            marker = googleMap.addMarker(new MarkerOptions().position(location).title(e.getName()).snippet("What: " + e.getType() + "\nWhere: " +  e.getLocation() + "\nWhen: " + splited[0])
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.typhoon)));
+                            marker.setTag(e.getKey());
+                            break;
+                        case "Earthquake":
+                            marker = googleMap.addMarker(new MarkerOptions().position(location).title(e.getName()).snippet("What: " + e.getType() + "\nWhere: " +  e.getLocation() + "\nWhen: " + splited[0])
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.earthquake)));
+                            marker.setTag(e.getKey());
+                            break;
+                        case "Flood":
+                            marker = googleMap.addMarker(new MarkerOptions().position(location).title(e.getName()).snippet("What: " + e.getType() + "\nWhere: " +  e.getLocation() + "\nWhen: " + splited[0])
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.flood)));
+                            marker.setTag(e.getKey());
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                        @Override
+                        public View getInfoWindow(Marker arg0) {
+                            return null;
+                        }
+
+                        @Override
+                        public View getInfoContents(Marker marker) {
+
+                            LinearLayout info = new LinearLayout(getContext());
+                            info.setOrientation(LinearLayout.VERTICAL);
+
+                            TextView title = new TextView(getContext());
+                            title.setTextColor(Color.BLACK);
+                            title.setGravity(Gravity.CENTER);
+                            title.setTypeface(null, Typeface.BOLD);
+                            title.setText(marker.getTitle());
+
+                            TextView snippet = new TextView(getContext());
+                            snippet.setTextColor(Color.GRAY);
+                            snippet.setText(marker.getSnippet());
+
+                            info.addView(title);
+                            info.addView(snippet);
+
+                            return info;
+                        }
+                    });
+                    /*marker = googleMap.addMarker(new MarkerOptions().position(location).title(e.getName()).snippet(e.getType() + " in " +  e.getLocation() + "  on " + splited[0])
+                                .icon(bitmapDescriptor));
+                    marker.setTag(e.getKey());*/
 
                 }
 

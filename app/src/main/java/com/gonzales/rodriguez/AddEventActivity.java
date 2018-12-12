@@ -1,16 +1,21 @@
 package com.gonzales.rodriguez;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -34,6 +39,8 @@ public class AddEventActivity extends AppCompatActivity {
     EditText eName, eLocation, eLat, eLong, eAction, eVehicle;
     Spinner spinner, teamSpinner;
     ArrayList<String> teamNames;
+    SharedPreferences sp;
+    SharedPreferences.Editor ed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +58,8 @@ public class AddEventActivity extends AppCompatActivity {
 
         teamNames = new ArrayList<String>();
 
-
+        sp = getSharedPreferences("event", Context.MODE_PRIVATE);
+        ed = sp.edit();
 
         eName = (EditText) findViewById(R.id.etName);
         eLocation = (EditText) findViewById(R.id.etLocation);
@@ -61,6 +69,10 @@ public class AddEventActivity extends AppCompatActivity {
         eVehicle = (EditText) findViewById(R.id.etVehicle);
         spinner = (Spinner) findViewById(R.id.mySpinner);
         teamSpinner = (Spinner) findViewById(R.id.teamSpinner);
+
+        eLocation.setEnabled(false);
+        eLat.setEnabled(false);
+        eLong.setEnabled(false);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -78,6 +90,7 @@ public class AddEventActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         teams.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -99,6 +112,119 @@ public class AddEventActivity extends AppCompatActivity {
 
             }
         });
+
+        eName.setText(sp.getString("name", ""));
+        eLocation.setText(sp.getString("location", ""));
+        eAction.setText(sp.getString("action", ""));
+        eVehicle.setText(sp.getString("vehicle", ""));
+        spinner.setSelection(sp.getInt("disaster", 0));
+        teamSpinner.setSelection(sp.getInt("team", 0));
+        eLat.setText(sp.getString("latitude", ""));
+        eLong.setText(sp.getString("longitude", ""));
+
+        eName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ed.putString("name", s.toString()).commit();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+       /* eLocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ed.putString("location", s.toString()).commit();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });*/
+
+        eAction.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ed.putString("action", s.toString()).commit();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        eVehicle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ed.putString("vehicle", s.toString()).commit();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                ed.putString("disaster", parentView.getItemAtPosition(position).toString()).commit();
+                ed.putInt("disaster", position).commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        teamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                ed.putString("team", parentView.getItemAtPosition(position).toString()).commit();
+                ed.putInt("team", position).commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sp.edit().clear().commit();
     }
 
     public void insertEvent(View v) {
@@ -142,15 +268,16 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError != null) {
-                    Toast.makeText(AddEventActivity.this, "Ooops, event not added!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddEventActivity.this, "Event not added!", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(AddEventActivity.this, "Yey, event successfully added!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddEventActivity.this, "Event successfully added!", Toast.LENGTH_LONG).show();
                     eName.setText("");
                     eLocation.setText("");
                     eLat.setText("");
                     eLong.setText("");
                     eAction.setText("");
                     eVehicle.setText("");
+                    sp.edit().clear().commit();
                 }
             }
         });
@@ -175,6 +302,11 @@ public class AddEventActivity extends AppCompatActivity {
         }
     });*/
 
+    }
+
+    public void selectLocation(View v) {
+        Intent i = new Intent(this, SelectEventLocation.class);
+        startActivity(i);
     }
 
     //Code for back button
